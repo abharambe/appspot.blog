@@ -1,0 +1,8 @@
+indexes:
+
+- kind: Entry
+  properties:
+  - name: static
+  - name: published
+    direction: desc
+
