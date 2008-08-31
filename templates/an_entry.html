@@ -1,0 +1,28 @@
+    <div class="hentry p1 post">
+     <div class="entry-content">
+         {%block entrytitle %}<h3 class="entry-title"><a
+                 href='{{entry.url}}'>{{entry.title}}</a></h3>{% endblock %}
+         <p>{{entry.body_html}}</p>
+     </div>
+     <div class="entry-date">
+        <div>
+         <a rel="bookmark" title="Permalink to {{entry.title}}"
+             href="{{entry.url}}"><abbr class="published"
+                 title="{{entry.published.date}}">{{entry.published.date|date:"d M Y"}}</abbr> <span>#</span></a>
+        </div>
+        <div class='entry-category'>
+            {% if entry.tags %} 
+            <div class='image'>
+                <img src='/static/images/tag.gif' />
+            </div>
+            <div class='tags'>
+   	     {% for tag in entry.tags %}
+   	      <a href="/topic/{{tag}}">{{tag}}</a> 
+             {% endfor %}
+            </div>
+           {% endif %}
+        </div>
+     </div>
+     <br style="clear: both;"/>
+    </div>
+

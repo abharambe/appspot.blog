@@ -8,77 +8,73 @@
 	{% endblock %}
 </title>
 {% block css %}
-	<link href="/static/css/blueprint/screen.css" rel="stylesheet" type="text/css"/>
-	<link href="/static/css/base.css" rel="stylesheet" type="text/css"/>
+	<link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
 {% endblock %}
 {% block extracss %} {% endblock %}
 {% block extrajs %} {% endblock %}
-<link rel="alternate" href="http://teh.appspot.com/feed" type="application/atom+xml" title="Teh blog"/>
+<link rel="alternate" href="/feed" type="application/atom+xml" title="{{config.title}}"/>
 </head>
 
 <body>
-<div id="header">
-	<div id="logo">
-		<a href="/" id="sitetitle">
-			{{config.title}}</a> 
-	</div><!-- logo -->
-	<div id="feed"><a href="http://teh.appspot.com/feed">
-		<img src="/static/images/feed.png" alt="Subscribe to this blog"/></a>
-	</div><!-- feed -->
-
-	<div id="search">
-		<form action="http://www.google.com/search" method="get">
-			<div>
-				<input name="q" size="20" type="text"/>
-				<input type="submit" value="Search"/>
-				<input name="domains" type="hidden" value="teh.appspot.com"/>
-				<input name="sitesearch" type="hidden" value="teh.appspot.com"/>
-			</div>
-		</form>
-	</div><!-- search -->
-</div><!-- header -->
-
-<div id="body">
-<div class="full container">
-{% if message %}
-	{% block message %}
-		{{message}}
-	{% endblock %}
-{% endif %}
-<div class="span-15 prepend-1 colborder">
-{% block content %}
-{% endblock %}
+ <div id="wrapper" class="hfeed">
+  <div id="header">
+   <h1 id="blog-title">
+    <a rel="home" title="{{config.title}}" href="/">{{config.title}}</a>
+</h1>
+<div id="blog-description">
+    {% block subtitle %}ashwin's stream of consciousness{% endblock %}
 </div>
-<div class="span-7 last">
-	<ul>
-	<li><a href="/about">About</a></li>
-	<li><a href="/docs">Documentation</a></li>
-	<li><a href="/feed">Blog Feed</a></li>
-	</ul>
-<h3>Meta</h3>
-<p><small>Login required</small></p>
-<ul>
-<li><a href="/new">New Entry</li>
-<li><a href="/config">Blog Config</li>	
-</ul>
-	
-</div>
-
-</div><!-- full -->
-
-<div class="container"><a href="/entries">All posts</a></div>
-</div><!-- body -->
-<hr>
-<div id="footer" class="container">
-	&copy;2008 Teh blog - <a href="/about">About Teh</a> - <a href="http://creativecommons.org/licenses/by/2.5/">Creative Commons License</a>
-	{% block extrafooter %}
-		
-	{% endblock %}
-</div>
-<!-- 
-	Layout for Teh blog app - http://teh.appspot.com
-	Derived from - http://bret.appspot.com
-	License: CC2.5 - http://creativecommons.org/licenses/by/2.5/
--->
+  </div>
+  
+  <div id="container">
+   <div id="content">
+    {% block content %}
+    {% endblock %}
+    {% if nav %}
+    {% block navbelow %}
+    <div id="nav-below" class="navigation column">
+        <div class="column-content">
+         <p>
+         {% if nav.prev %}
+         <a href="?page={{nav.prev}}">&laquo; Older posts</a>
+         {% endif %}
+         {% if nav.forward %}
+         <a href="?page={{nav.forward}}">&laquo; Newer posts</a>
+         {% endif %}
+         </p>
+     </div>
+     <div class="column-title">Navigation</div>
+     <br style="clear: both;"/>
+    </div>
+    {% endblock navbelow %}
+    {% endif %}
+    {% if admin %}
+    {% block admin %}
+    <div id="admin" class="navigation column">
+     <div class="column-content">
+         <p>
+         <a href="/admin/new">create a new entry</a>
+         </p>
+     </div>
+     <div class="column-title">Admin</div>
+     <br style="clear: both;"/>
+    </div>
+    {% endblock admin %}
+    {% endif %}
+   </div>
+  </div>
+  {% block primarysidebar %}
+  <div id="primary" class="sidebar">
+  </div>
+  {% endblock primarysidebar %}
+  {% block secondarysidebar %}
+  <div id="secondary" class="sidebar">
+  </div>
+  {% endblock secondarysidebar %}
+  {% block footer %}
+  <div id="footer"> </div>
+  {% endblock footer %}
+ </div>
 </body>
+
 </html>

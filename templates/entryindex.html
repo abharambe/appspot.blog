@@ -1,16 +1,13 @@
 {% extends "base.html" %}
+{% if subtitle %}
+{% block subtitle %}{{subtitle}}{% endblock %}
+{% endif %}
+
 {% block content %}
-<h1>Entries Index</h1>
-<h2>Blog entries</h2>
-<ul>
+<h2>{{message}}</h2>
+<ul class='entrylist'>
 {% for entry in entries %}
 	<li><a href="{{entry.url}}">{{entry.title}}</a></li>
-{% endfor %}
-</ul>
-<h2>Static pages</h2>
-<ul>
-{% for page in pages %}
-	<li><a href="{{page.url}}">{{page.title}}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}
