@@ -9,6 +9,8 @@ class Config(db.Expando):
     title = db.StringProperty(required=True)
 
 class TehRequestHandler(webapp.RequestHandler):    
+    entries_per_page = 2
+
     def __init__(self,**kw):
         webapp.RequestHandler.__init__(TehRequestHandler, **kw)
         

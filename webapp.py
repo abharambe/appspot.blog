@@ -6,6 +6,7 @@ webapp.py
 Created by Pradeep Gowda on 2008-04-23.
 Copyright (c) 2008 Yashotech. All rights reserved.
 """
+import logging
 import wsgiref.handlers
 
 from google.appengine.ext import webapp
@@ -38,11 +39,29 @@ class LogoutHandler(TehRequestHandler):
 
 class HomePageHandler(TehRequestHandler):
     def get(self):
-        entries = blog.Entry.all()
-        entries.filter("static =", False)
-        entries.order('-published').fetch(limit=5)
-        self.render("templates/home.html", entries=entries)
+        each = TehRequestHandler.entries_per_page
 
+        num = db.Query(blog.Entry).filter("static =", False).count()
+        num_pages = num / each 
+        if num % each > 0:
+            num_pages += 1
+
+        page = self.request.get('page')
+        if not page:
+            page = 1
+        else:
+            page = int(page)
+
+        offset = (page - 1) * each
+        entries = db.Query(blog.Entry).filter("static =", False).order("-published").fetch(each, offset)
+        nav = {}
+
+        if page < num_pages:
+            nav['prev'] = page + 1
+        if page > 1:
+            nav['forward'] = page - 1
+
+        self.render("templates/home.html", entries=entries, admin=users.is_current_user_admin(), nav=nav)
         
 def main():
     application = webapp.WSGIApplication([
@@ -72,8 +91,8 @@ def main():
     if config.count() > 0:
         config = config.fetch(1)[0]
     else: 
-        config1 = Config(title="TEH Blog")
-        config1.put()
+        config = Config(title="t-ashbha", url="http://ashwin-bharambe.appspot.com")
+        config.put()
        
     wsgiref.handlers.CGIHandler().run(application)
 

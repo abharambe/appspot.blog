@@ -6,6 +6,7 @@ blog.py
 Created by Pradeep Gowda on 2008-04-23.
 Copyright (c) 2008 Yashotech. All rights reserved.
 """
+import logging
 import wsgiref.handlers
 
 from google.appengine.ext import webapp
@@ -33,18 +34,16 @@ class Entry(db.Model):
     comments = db.BooleanProperty()
     
     def url(self):
-        if self.static == False: return '/entry/'+self.slug
-        else: return '/'+self.slug
+        if self.static == False: return '/entry/' + self.slug
+        else: return '/' + self.slug
     
 class EntryIndexHandler(TehRequestHandler):
     def get(self):
         entries = Entry.all().filter("static =", False)
         entries.order('-published')
         entries.fetch(999) #XXX: hardcoded; implement pagination
-        pages = Entry.all().filter("static =", True)
-        pages.order('-published')
-        pages.fetch(999) #XXX: hardcoded; implement pagination
-        self.render("templates/entryindex.html", entries=entries, pages=pages)
+
+        self.render("templates/entryindex.html", entries=entries, subtitle=" / all entries")
 
 class EntryHandler(TehRequestHandler):
     def get(self, slug):
@@ -87,7 +86,7 @@ class TagHandler(TehRequestHandler):
         message = 'Entries belonging to tag `%s`' %(slug, )
         if not entries:
             raise webapp.Error(404)
-        self.render("templates/entryindex.html", entries=entries, message=message)
+        self.render("templates/entryindex.html", entries=entries, message=message, subtitle=" / tags / %s" % slug)
         
 
 class FeedHandler(TehRequestHandler):

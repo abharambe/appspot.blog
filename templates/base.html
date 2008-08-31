@@ -36,12 +36,13 @@
         <div class="column-content">
          <p>
          {% if nav.prev %}
-         <a href="?page={{nav.prev}}">&laquo; Older posts</a>
+         <a href="?page={{nav.prev}}" style='float: left;'>&laquo; Older posts</a>
          {% endif %}
          {% if nav.forward %}
-         <a href="?page={{nav.forward}}">&laquo; Newer posts</a>
+         <a href="?page={{nav.forward}}" style='float: right;'>Newer posts &raquo;</a>
          {% endif %}
          </p>
+         <p style='clear: both;'></p>
      </div>
      <div class="column-title">Navigation</div>
      <br style="clear: both;"/>
